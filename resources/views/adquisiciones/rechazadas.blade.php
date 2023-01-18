@@ -35,10 +35,9 @@
                                     <th>Fecha Ingreso</th>
                                     <th>Folio</th>
                                     <th>Dependencia</th>
+                                    <th>Contenido</th>
                                     <th>Observaciones</th>
-                                    <th>Documento DRM02</th>
-                                    <th>Investigación</th>
-                                    <th>Resp. Requisitoria</th>
+                                    <th>Documentación</th>
                                     <th>Partida Presupuestal</th>
                                     <th>Descripción General</th>
                                     <th>Clasificación</th>
@@ -54,42 +53,27 @@
                             <tbody>
                                 @foreach($adquisicionesrechazadas as $adquisicionesrechazada)
                                 <tr 
-                                @if (Auth::user()->categoria <> 'admin' && Auth::user()->categoria <> 'cap')
+                                @if (Auth::user()->categoria <> 'admin' && Auth::user()->categoria <> 'cap' && Auth::user()->categoria <> 'compras' )
                                     @if ($adquisicionesrechazada->adquisicion_estatus == 2)
                                         style = "color:black;background:#7BCB62;"
                                     @elseif ($adquisicionesrechazada->adquisicion_estatus == 1)
                                         style = "color:black;background:#BACDB4;"
                                     @elseif ($adquisicionesrechazada->adquisicion_estatus == 0)
                                         style = "color:black;background:#CB6262;"
-                                     @endif  
+                                    @endif  
                                 @endif
-                               >
+                                >
                                     <td>{{$adquisicionesrechazada->fechaadqui}}</td>
                                     <td>{{$adquisicionesrechazada->folio}}</td>
                                     <td>{{$adquisicionesrechazada->dependencia_nombre}}</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#observaciones{{$adquisicionesrechazada->idadquisicion}}">Ver observaciones</button>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#contenido{{$adquisicionesrechazada->idadquisicion}}"><i class="fa-regular fa-folder-closed"></i> Contenido</button>
                                     </td>
                                     <td>
-                                        @if($adquisicionesrechazada->documento)
-                                            <a href="{{asset('/documentos/documentospresentados/'.$adquisicionesrechazada->documento)}}" target="_blank" style="color:black;">{{$adquisicionesrechazada->documento}}</a>
-                                        @else
-                                            No tiene documento
-                                        @endif
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#observaciones{{$adquisicionesrechazada->idadquisicion}}"><i class="fa-regular fa-eye"></i> Observaciones</button>
                                     </td>
                                     <td>
-                                        @if($adquisicionesrechazada->investigacion)
-                                            <a href="{{asset('/documentos/investigaciondemercado/'.$adquisicionesrechazada->investigacion)}}" target="_blank" style="color:black;">{{$adquisicionesrechazada->investigacion}}</a>
-                                        @else
-                                            No tiene investigación de mercado
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($adquisicionesrechazada->resrequi)
-                                            <a href="{{asset('/documentos/respuestarequisitoria/'.$adquisicionesrechazada->resrequi)}}" target="_blank" style="color:black;">{{$adquisicionesrechazada->resrequi}}</a>
-                                        @else
-                                            No tiene respuesta requisitoria
-                                        @endif
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#documentacion{{$adquisicionesrechazada->idadquisicion}}"><i class="fa-regular fa-file"></i> Documentos</button>
                                     </td>
                                     <td>{{$adquisicionesrechazada->partida ?? 'No se agrego partida presupuestal'}}</td>
                                     <td>{{$adquisicionesrechazada->descripcion}}</td>
@@ -103,6 +87,8 @@
                                     <td>{{$adquisicionesrechazada->fechaentrega}}</td>
                                 </tr>
                                 @include('adquisiciones.modales.modalobservacionesrechazadas')
+                                @include('adquisiciones.modales.modaldocumentacionrechazadas')
+                                @include('adquisiciones.modales.modalcontenidorechazadas')
                                 @endforeach
                             </tbody>
                         </table>

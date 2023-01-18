@@ -35,10 +35,9 @@
                                     <th>Fecha Ingreso</th>
                                     <th>Folio</th>
                                     <th>Dependencia</th>
+                                    <th>Contenido</th>
                                     <th>Observaciones</th>
-                                    <th>Documento DRM02</th>
-                                    <th>Investigación</th>
-                                    <th>Resp. Requisitoria</th>
+                                    <th>Documentación</th>
                                     <th>Partida Presupuestal</th>
                                     <th>Descripción General</th>
                                     <th>Clasificación</th>
@@ -49,47 +48,33 @@
                                     <th>Proveedor</th>
                                     <th>Fecha de Adquisición</th>
                                     <th>Fecha Entrega</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($adquisicionesaprobadas as $adquisicionesaprobada)
                                 <tr 
-                                @if (Auth::user()->categoria <> 'admin' && Auth::user()->categoria <> 'cap')
+                                @if (Auth::user()->categoria <> 'admin' && Auth::user()->categoria <> 'cap' && Auth::user()->categoria <> 'compras')
                                     @if ($adquisicionesaprobada->adquisicion_estatus == 2)
                                         style = "color:black;background:#7BCB62;"
                                     @elseif ($adquisicionesaprobada->adquisicion_estatus == 1)
                                         style = "color:black;background:#BACDB4;"
                                     @elseif ($adquisicionesaprobada->adquisicion_estatus == 0)
                                         style = "color:black;background:#CB6262;"
-                                     @endif  
+                                    @endif  
                                 @endif
-                               >
+                                >
                                     <td>{{$adquisicionesaprobada->fechaadqui}}</td>
                                     <td>{{$adquisicionesaprobada->folio}}</td>
                                     <td>{{$adquisicionesaprobada->dependencia_nombre}}</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#observaciones{{$adquisicionesaprobada->idadquisicion}}">Ver observaciones</button>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#contenido{{$adquisicionesaprobada->idadquisicion}}"><i class="fa-regular fa-folder-closed"></i> Contenido</button>
                                     </td>
                                     <td>
-                                        @if($adquisicionesaprobada->documento)
-                                            <a href="{{asset('/documentos/documentospresentados/'.$adquisicionesaprobada->documento)}}" target="_blank" style="color:black;">{{$adquisicionesaprobada->documento}}</a>
-                                        @else
-                                            No tiene documento
-                                        @endif
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#observaciones{{$adquisicionesaprobada->idadquisicion}}"><i class="fa-regular fa-eye"></i> Observaciones</button>
                                     </td>
                                     <td>
-                                        @if($adquisicionesaprobada->investigacion)
-                                            <a href="{{asset('/documentos/investigaciondemercado/'.$adquisicionesaprobada->investigacion)}}" target="_blank" style="color:black;">{{$adquisicionesaprobada->investigacion}}</a>
-                                        @else
-                                            No tiene investigación de mercado
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($adquisicionesaprobada->resrequi)
-                                            <a href="{{asset('/documentos/respuestarequisitoria/'.$adquisicionesaprobada->resrequi)}}" target="_blank" style="color:black;">{{$adquisicionesaprobada->resrequi}}</a>
-                                        @else
-                                            No tiene respuesta requisitoria
-                                        @endif
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#documentacion{{$adquisicionesaprobada->idadquisicion}}"><i class="fa-regular fa-file"></i> Documentos</button>
                                     </td>
                                     <td>{{$adquisicionesaprobada->partida ?? 'No se agrego partida presupuestal'}}</td>
                                     <td>{{$adquisicionesaprobada->descripcion}}</td>
@@ -97,12 +82,18 @@
                                     <td>{{$adquisicionesaprobada->medida_nombre}}</td>
                                     <td>{{$adquisicionesaprobada->descripcionadqui}}</td>
                                     <td>{{$adquisicionesaprobada->financiamiento_nombre}}</td>
-                                    <td>${{number_format($adquisicionesaprobada->monto,2, ',', ' ')}}</td>
-                                    <td>{{$adquisicionesaprobada->proveedor}}</td>
+                                    <td>${{number_format($adquisicionesaprobada->monto,2, '.', ',')}}</td>
+                                    <td>{{$adquisicionesaprobada->nombre_comercial ?? 'No hay proveedor seleccionado'}}</td>
                                     <td>{{$adquisicionesaprobada->fechaaprox}}</td>
                                     <td>{{$adquisicionesaprobada->fechaentrega}}</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editar{{$adquisicionesaprobada->idadquisicion}}">Editar</button>
+                                    </td>
                                 </tr>
                                 @include('adquisiciones.modales.modalobservacionesaprobadas')
+                                @include('adquisiciones.modales.modaldocumentacionaprobadas')
+                                @include('adquisiciones.modales.modalcontenidoaprobadas')
+                                @include('adquisiciones.modales.modaleditaraprovada')
                                 @endforeach
                             </tbody>
                         </table>

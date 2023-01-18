@@ -45,6 +45,7 @@
                                     <th>Clave</th>
                                     <th>Nombre</th>
                                     <th>Correo</th>
+                                    <th>Dependencia</th>
                                     <th>Categoria</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -53,9 +54,26 @@
                                 @foreach ($usuarios as $usuario)
                                 <tr>
                                     <td>{{$usuario->id}}</td>
-                                    <td>{{$usuario->name}}</td>
-                                    <td>{{$usuario->email}}</td>
-                                    <td>{{$usuario->categoria}}</td>
+                                    <td class="text-uppercase">{{$usuario->name}}</td>
+                                    <td class="text-uppercase">{{$usuario->email}}</td>
+                                    <td class="text-uppercase">{{$usuario->dependencia_nombre ?? 'Usuario administrador'}}</td>
+                                    <td class="text-uppercase">
+                                        @if ($usuario->categoria == 'admin')
+                                            Administrador
+                                        @elseif($usuario->categoria == 'cap')
+                                            Capturista
+                                        @elseif($usuario->categoria == 'lector')
+                                            Lector
+                                        @elseif($usuario->categoria == 'dir')
+                                            Director
+                                        @elseif($usuario->categoria == 'lector')
+                                            Lector
+                                        @elseif($usuario->categoria == 'compras')
+                                            Usuario de compras
+                                        @else
+                                            {{$usuario->categoria}}
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{route('bajausuario',$usuario->id)}}" class="btn btn-danger btn-sm" onclick="return confirm ('¿Estás seguro de dar de baja este usuario?')">Desactivar</a>
                                     </td>
@@ -83,7 +101,23 @@
                                     <td>{{$usuario_1->id}}</td>
                                     <td>{{$usuario_1->name}}</td>
                                     <td>{{$usuario_1->email}}</td>
-                                    <td>{{$usuario_1->categoria}}</td>
+                                    <td>
+                                        @if ($usuario->categoria == 'admin')
+                                            Administrador
+                                        @elseif($usuario->categoria == 'cap')
+                                            Capturista
+                                        @elseif($usuario->categoria == 'lector')
+                                            Lector
+                                        @elseif($usuario->categoria == 'dir')
+                                            Director
+                                        @elseif($usuario->categoria == 'lector')
+                                            Lector
+                                        @elseif($usuario->categoria == 'compras')
+                                            Usuario de compras
+                                        @else
+                                            {{$usuario->categoria}}
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{route('bajausuario',$usuario_1->id)}}" class="btn btn-success btn-sm" onclick="return confirm ('¿Estás seguro de activar este usuario?')">Activar</a>
                                     </td>
@@ -174,10 +208,10 @@
 <!-- Modal -->
 <div class="modal fade" id="agregarusuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+        <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Agregar usuario</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="staticBackdropLabel">Agregar usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form method="POST" action="{{ route('agregarusuario') }}">
@@ -205,15 +239,30 @@
                     </div>
                 </div><br>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <label for="exampleInputEmail1" class="form-label">Categoria</label>
                         <select class="form-select" name="categoria" id="categoria" aria-label="Default select example" required>
                             <option value="">Seleccionar una opción...</option>
                             <option value="dir">Director</option>
                             <option value="cap">Capturista</option>
                             <option value="lector">Lector</option>
-                          </select>
+                            <option value="compras">Compras</option>
+                        </select>
                         @error('categoria')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="col-md-8">
+                        <label for="exampleInputEmail1" class="form-label">Dependencia</label>
+                        <select class="form-select" name="dependencia" id="dependencia" aria-label="Default select example">
+                            <option value="">Seleccionar una opción...</option>
+                            @foreach($dependencias as $dependencia)
+                                <option value="{{$dependencia->iddependencia}}">{{$dependencia->dependencia_nombre}}</option>
+                            @endforeach
+                        </select>
+                        @error('dependencia')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -224,9 +273,9 @@
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
-      </div>
+    </div>
     </div>
 </div>
 </div>

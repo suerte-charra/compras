@@ -3,7 +3,7 @@
         <a class="navbar-brand" href="{{ route('home') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
-        <section class="" style="margin-left:45px;">
+        <section class="" style="margin-left:75px;">
             <div class="">
                 <box-icon name='menu'></box-icon>
                 <i class='bx bx-menu bx-md'></i>

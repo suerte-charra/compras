@@ -2,11 +2,21 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-end">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ asset('img/logo salamanca.png') }}" class="img-fluid mt-2" alt="Salamanca">
+                </div>
+            </div>
+        </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
+                <div class="card-header text-center">
+                    {{-- {{ __('Login') }} --}}
+                    <h3>Sistema Integral de Adquisiciones</h3>
+                </div>
+                <h5 class="text-center mt-4">Iniciar sesión:</h5>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -39,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -49,11 +59,11 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
-
+                        </div> --}}
+                        
                         <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="col-md-8 offset-md-4 mt-2">
+                                <button type="submit" class="btn btn-secondary">
                                     {{ __('Login') }}
                                 </button>
 
@@ -69,5 +79,6 @@
             </div>
         </div>
     </div>
+    <div style="background-color:#692e41;" class="mt-1 d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5"></div>
 </div>
 @endsection

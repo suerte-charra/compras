@@ -47,6 +47,7 @@
                                     <th>Contenido</th>
                                     <th>Observaciones</th>
                                     <th>Documentación</th>
+                                    <th>Estatus</th>
                                     <th>Partida Presupuestal</th>
                                     <th>Descripción General</th>
                                     <th>Clasificación</th>
@@ -85,6 +86,13 @@
                                     <td>
                                         <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#documentacion{{$adquisicion->idadquisicion}}"><i class="fa-regular fa-file"></i> Documentos</button>
                                     </td>
+                                    <td>
+                                        @if ($adquisicion->adquisicion_estatus == 4)
+                                            EN ALMACEN
+                                        @else
+                                            ENTREGADO
+                                        @endif
+                                    </td>
                                     <td>{{$adquisicion->partida ?? 'No se agrego partida presupuestal'}}</td>
                                     <td>{{$adquisicion->descripcion}}</td>
                                     <td>{{$adquisicion->clasificacion_nombre}}</td>
@@ -96,10 +104,15 @@
                                     <td>{{$adquisicion->fechaaprox}}</td>
                                     <td>{{$adquisicion->fechaentrega}}</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editar{{$adquisicion->idadquisicion}}">Editar</button>
+                                        @if ($adquisicion->adquisicion_estatus == 4)
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editar{{$adquisicion->idadquisicion}}">Editar</button>    
+                                        @else
+                                            NO ACCIONES QUE REALIZAR
+                                        @endif
+                                        
                                     </td>
                                 </tr>
-                                @include('adquisiciones.modales.modaleditar')
+                                @include('adquisiciones.modales.modaleditaralmacen')
                                 @include('adquisiciones.modales.modalobservaciones')
                                 @include('adquisiciones.modales.modaldocumentacion')
                                 @include('adquisiciones.modales.modalcontenido')

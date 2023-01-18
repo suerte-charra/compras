@@ -14,6 +14,7 @@
             <li><a class="link_name" href="{{ route('home') }}">Inicio</a></li>
             </ul>
         </li>
+        @if (Auth::user()->categoria == 'admin' || Auth::user()->categoria == 'compras')
         <li>
             <div class="iocn-link">
             <a href="#">
@@ -24,21 +25,29 @@
             </div>
             <ul class="sub-menu">
                 <li><a href="{{route('indice')}}">Clasificaciones</a></li>
-                <li><a href="{{route('indicemedida')}}">Unidad de medidas</a></li>
+                <li><a href="{{route('indicemedida')}}">Unidades de medida</a></li>
                 <li><a href="{{route('indicefinancimiento')}}">F. de financiamiento</a></li>
-                <li><a href="{{route('indicedependencia')}}">Dependencia</a></li>
+                <li><a href="{{route('indicedependencia')}}">Dependencias</a></li>
+                <li><a href="{{route('indiceproveedor')}}">Proveedores</a></li>
             </ul>
         </li>
+        @endif
         <li>
             <div class="iocn-link">
+            @if (Auth::user()->categoria <> 'admin' && Auth::user()->categoria <> 'compras')
+                <a href="{{route('indiceadquisiciones')}}">
+            @else
             <a href="#">
+            @endif
                 {{-- <i class='bx bx-collection' ></i> --}}
                 <i class="fa-regular fa-note-sticky"></i>
                 <span class="link_name">Adquisiciones</span>
             </a>
-            <i class='bx bxs-chevron-down arrow'></i>
+            @if (Auth::user()->categoria == 'admin'|| Auth::user()->categoria == 'compras')
+                <i class='bx bxs-chevron-down arrow'></i>
+            @endif
             </div>
-            @if (Auth::user()->categoria == 'admin')
+            @if (Auth::user()->categoria == 'admin' || Auth::user()->categoria == 'compras')
             <ul class="sub-menu">
                 <li><a href="{{route('indiceadquisiciones')}}">En proceso</a></li>
                 <li><a href="{{route('indexaprobadas')}}">Aprobadas</a></li>
@@ -46,26 +55,29 @@
             </ul>  
             @endif
         </li>
-        <li>
-            <a href="{{ route('indiceusuario') }}">
-            {{-- <i class='bx bx-grid-alt' ></i> --}}
-            <i class="fa-regular fa-user"></i>
-            <span class="link_name">Usuarios</span>
-            </a>
-            <ul class="sub-menu blank">
-            <li><a class="link_name" href="{{ route('indiceusuario') }}">Usuarios</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ route('indicemov') }}">
-            {{-- <i class='bx bx-grid-alt' ></i> --}}
-            <i class="fa-regular fa-user"></i>
-            <span class="link_name">Movimientos</span>
-            </a>
-            <ul class="sub-menu blank">
-            <li><a class="link_name" href="{{ route('indicemov') }}">Movimientos</a></li>
-            </ul>
-        </li>
+        @if (Auth::user()->categoria == 'admin')
+            <li>
+                <a href="{{ route('indiceusuario') }}">
+                {{-- <i class='bx bx-grid-alt' ></i> --}}
+                <i class="fa-regular fa-user"></i>
+                <span class="link_name">Usuarios</span>
+                </a>
+                <ul class="sub-menu blank">
+                <li><a class="link_name" href="{{ route('indiceusuario') }}">Usuarios</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ route('indicemov') }}">
+                {{-- <i class='bx bx-grid-alt' ></i> --}}
+                <i class="fa-regular fa-chart-bar"></i>
+                <span class="link_name">Movimientos</span>
+                </a>
+                <ul class="sub-menu blank">
+                <li><a class="link_name" href="{{ route('indicemov') }}">Movimientos</a></li>
+                </ul>
+            </li>   
+        @endif
+        
         {{-- <li>
             <div class="iocn-link">
             <a href="{{route('home')}}">

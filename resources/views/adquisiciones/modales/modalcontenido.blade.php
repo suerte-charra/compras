@@ -1,15 +1,15 @@
 <!-- Modal -->
-<div class="modal fade" id="observaciones{{$adquisicion->idadquisicion}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="contenido{{$adquisicion->idadquisicion}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Observaciones del folio: {{$adquisicion->folio}}</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Contenido de la requisición con folio: {{$adquisicion->folio}}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col-md-12">
-                    <textarea name="" id="" cols="45" rows="10" class="form-control" style="resize: none;" readonly>{{$adquisicion->observaciones}}</textarea>
+                    <textarea name="" id="" cols="45" rows="10" class="form-control" style="resize: none;">{{$adquisicion->adqui_contenido}}</textarea>
                 </div>
             </div>
         </div>

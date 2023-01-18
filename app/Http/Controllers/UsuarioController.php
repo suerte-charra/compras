@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clasificacion;
+use App\Models\Dependencia;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
@@ -41,9 +43,15 @@ class UsuarioController extends Controller
     }
 
     public function indiceusuario(){
-        $usuarios = User::where('user_estatus',1)->get();
+        
+        $usuarios = DB::table('users')
+                        ->leftJoin('dependencias','iddependencia','user_iddependencia')
+                        ->select('users.*','dependencias.dependencia_nombre')
+                        ->where('user_estatus',1)
+                        ->get();
         $usuarios_1 = User::where('user_estatus',0)->get();
-        return view ('usuarios.indice',compact('usuarios','usuarios_1'));
+        $dependencias = Dependencia::where('dependencia_estatus',1)->get();
+        return view ('usuarios.indice',compact('usuarios','usuarios_1','dependencias'));
     }
 
     public function agregarusuario(Request $request){

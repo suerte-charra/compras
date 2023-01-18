@@ -17,10 +17,12 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
+    <link href="{{asset('build/assets/app.5380b351.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @yield('css')
+    @vite('resources/js/app.js')
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <!--@vite(['resources/sass/app.scss', 'resources/js/app.js'])-->
 </head>
 <body>
     <div id="app" class="wrapper">
@@ -34,5 +36,6 @@
     </div>
     @yield('js')
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{asset('build/assets/app.024077bb.js')}}"></script>
 </body>
 </html>

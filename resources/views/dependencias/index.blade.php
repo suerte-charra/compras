@@ -137,9 +137,32 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-        $('#example').DataTable();
-        } );
+        $(document).ready(function () {
+            $('#example_1').DataTable({
+                scrollX: true,
+                "lengthMenu": [[15,20,50,-1],[15,20,50,"Todos"]],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Registros",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+            });
+        });
     </script>
 @endsection
 <!-- Modal -->

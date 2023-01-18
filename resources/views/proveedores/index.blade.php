@@ -7,6 +7,9 @@
         .toast-success{
             background-color: #51a351 !important;
         }
+        .toast-error{
+            background-color: #be5252 !important;
+        }
     </style>
 @endsection
 @section('content')
@@ -15,7 +18,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Catalogo de fuentes de financiamiento</h4>
+                    <h4>Catalogo de Proveedores</h4>
                     <div class="row">
                         <div class="col align-self-end text-end">
                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
@@ -39,47 +42,62 @@
                         </div>
                     @endif
                     <div class="container border">
-                        <h5 class="text-center mt-2">Fuentes de financiamiento activas</h5>
+                        <h5 class="text-center mt-2">Proveedores activos</h5>
                         <table id="example" class="table table-striped dt-responsive nowrap border" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th>Clave</th>
+                                    <th>Rfc</th>
                                     <th>Nombre</th>
+                                    <th>Dirección</th>
+                                    <th>Correo</th>
+                                    <th>Giro</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($financiamientos as $financiamiento)
+                                @foreach ($proveedores as $proveedor)
                                 <tr>
-                                    <td>{{$financiamiento->idfinanciamiento}}</td>
-                                    <td>{{$financiamiento->financiamiento_nombre}}</td>
+                                    <td>{{$proveedor->idproveedor}}</td>
+                                    <td>{{$proveedor->rfc}}</td>
+                                    <td>{{$proveedor->nombre_comercial}}</td>
+                                    <td>{{$proveedor->direccion}}</td>
+                                    <td>{{$proveedor->correo}}</td>
+                                    <td>{{$proveedor->giro}}</td>
                                     <td>
-                                        {{-- <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editar{{$financiamiento->idfinanciamiento}}">Editar</button> --}}
-                                        <a href="{{route('bajafinanciamiento',$financiamiento->idfinanciamiento)}}" class="btn btn-danger btn-sm" onclick="return confirm ('¿Estás seguro de dar de baja esta fuente de financiamiento?')">Desactivar</a>
+                                        <a href="{{route('bajaproveedor',$proveedor->idproveedor)}}" class="btn btn-danger btn-sm" onclick="return confirm ('¿Estás seguro de dar de baja este proveedor?')">Desactivar</a>
                                     </td>
                                 </tr>
-                                {{-- @include('financiamiento.modales.modaleditar') --}}
+                                {{-- @include('dependencias.modales.modaleditar') --}}
                                 @endforeach
                             </tbody>
                         </table>
                     </div><br>
                     <div class="container border">
-                        <h5 class="text-center mt-2">Fuentes de financiamiento inactivas</h5>
+                        <h5 class="text-center mt-2">Proveedores inactivos</h5>
                         <table id="example_1" class="table table-striped dt-responsive nowrap border" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th>Clave</th>
+                                    <th>Rfc</th>
                                     <th>Nombre</th>
+                                    <th>Dirección</th>
+                                    <th>Correo</th>
+                                    <th>Giro</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($financiamientos_1 as $financiamiento_1)
+                                @foreach ($proveedores_1 as $proveedor_1)
                                 <tr>
-                                    <td>{{$financiamiento_1->idfinanciamiento}}</td>
-                                    <td>{{$financiamiento_1->financiamiento_nombre}}</td>
+                                    <td>{{$proveedor_1->idproveedor}}</td>
+                                    <td>{{$proveedor_1->rfc}}</td>
+                                    <td>{{$proveedor_1->nombre_comercial}}</td>
+                                    <td>{{$proveedor_1->direccion}}</td>
+                                    <td>{{$proveedor_1->correo}}</td>
+                                    <td>{{$proveedor_1->giro}}</td>
                                     <td>
-                                        <a href="{{route('bajafinanciamiento',$financiamiento_1->idfinanciamiento)}}" class="btn btn-success btn-sm" onclick="return confirm ('¿Estás seguro de activar esta fuente de financiamiento?')">Activar</a>
+                                        <a href="{{route('bajaproveedor',$proveedor_1->idproveedor)}}" class="btn btn-success btn-sm" onclick="return confirm ('¿Estás seguro de activar este proveedor?')">Activar</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -167,29 +185,55 @@
 @endsection
 <!-- Modal -->
 <div class="modal fade" id="agregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Agregar fuente de financiamiento</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('agregarfinanciamiento')}}" method="POST">
-                    @csrf
-                    <label for="" class="form-label">Nombre fuente de financiamiento</label>
-                    <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
-                    @error('nombre')
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Agregar proveedor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{route('agregarproveedor')}}" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="" class="form-label">Nombre comercial</label>
+                    <input type="text" class="form-control" name="ncomercial" id="ncomercial">
+                </div>
+                <div class="col-md-4">
+                    <label for="" class="form-label">Rfc</label>
+                    <input type="text" class="form-control @error('rfc') is-invalid @enderror" name="rfc" id="rfc" minlength="13" maxlength="14" required>
+                    @error('rfc')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                    <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('¿Desea guardar esta nueva fuente de financiamiento?')">Guardar</button>
-                </form>
+                </div>
+                <div class="col-md-4">
+                    <label for="" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" name="direccion" id="direccion">
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="" class="form-label">Correo</label>
+                    <input type="email" class="form-control" name="correo" id="correo">
+                </div>
+                <div class="col-md-4">
+                    <label for="" class="form-label">Giro</label>
+                    <input type="email" class="form-control" name="giro" id="giro">
+                </div>
+                <div class="col-md-4">
+                    <label for="" class="form-label">Nombre</label>
+                    <input type="email" class="form-control" name="nombre" id="nombre">
+                </div>
             </div>
+            <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('¿Desea guardar este nuevo proveedor?')">Guardar</button>
+          </form>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
     </div>
 </div>
 </div>
