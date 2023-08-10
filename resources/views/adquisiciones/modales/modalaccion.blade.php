@@ -11,7 +11,7 @@
                     <div class="col-12">
                         <form action="{{route('observacionadqui',$adquisicion->idadquisicion)}}" method="POST">
                             @csrf
-                            <textarea name="observacion" id="observacion" cols="30" rows="10" class="form-control" required></textarea>
+                            <textarea name="observacion" id="observacion" cols="30" rows="10" class="form-control" required style="resize:none"></textarea>
                             <button type="submit" class="btn btn-primary mt-2">Agregar</button>
                         </form>
                     </div>

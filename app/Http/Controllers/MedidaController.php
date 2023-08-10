@@ -16,10 +16,10 @@ class MedidaController extends Controller
     public function agregarmedida(Request $request){
         //dd($request);
         $request->validate([
-            'nombre' => 'required | string | min:2'
+            'nombre' => 'required | string | min:2 |unique:medidas,medida_nombre'
         ]);
         $nuevamedida = new Medida;
-        $nuevamedida->medida_nombre = $request->nombre;
+        $nuevamedida->medida_nombre = strtoupper($request->nombre);
         $nuevamedida->save();
         return back()->with('success', 'Unidad de medida guardada exitosamente!');
     }

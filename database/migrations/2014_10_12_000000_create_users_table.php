@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('categoria')->default('admin');
             $table->integer('user_estatus')->default(1)->comment('1 activo, 2 inactivo');
+            $table->integer('user_passestatus')->default(0)->comment('0 no ha cambiado contraseña, 1 ya cambio');
             $table->rememberToken();
             $table->timestamps();
         });

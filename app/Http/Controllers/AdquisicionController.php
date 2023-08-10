@@ -52,25 +52,6 @@ class AdquisicionController extends Controller
             // ->where('adquisicion_estatus',4)
             ->get();
             return view('adquisiciones.indexlector',compact('adquisiciones'));
-        }elseif(Auth::user()->categoria == 'almacen'){
-            $adquisiciones = DB::table('adquisicions')
-            ->join('dependencias','adquisicions.cat_dep','dependencias.iddependencia')
-            ->leftJoin('clasificacions','adquisicions.cat_clas','=','clasificacions.idclasificacion')
-            ->leftJoin('medidas','adquisicions.cat_med','=','medidas.idmedida')
-            ->leftJoin('financiamientos','adquisicions.cat_fin','=','financiamientos.idfinanciamiento')
-            ->leftJoin('proveedors','adquisicions.proveedor','=','proveedors.idproveedor')
-            ->select('adquisicions.*','dependencias.dependencia_nombre','clasificacions.clasificacion_nombre','medidas.medida_nombre',
-            'financiamientos.financiamiento_nombre','proveedors.idproveedor','proveedors.nombre_comercial')
-            // ->where('dependencia_estatus',1)
-            //->where('clasificacion_estatus',1)
-            // ->where('financimiento_estatus',1)
-            // ->where('medida_estatus',1)
-            ->where('adquisicion_estatus',4)
-            ->orWhere('adquisicion_estatus',5)
-            ->get();
-            //dd($adquisiciones);
-            $proveedores = Proveedor::all();
-            return view('adquisiciones.indexalmacen',compact('clasificaciones','dependencias','financiamientos','medidas','adquisiciones','fecha','proveedores'));
         }else{
             $adquisiciones = DB::table('adquisicions')
             ->join('dependencias','adquisicions.cat_dep','dependencias.iddependencia')
@@ -85,6 +66,7 @@ class AdquisicionController extends Controller
             ->where('adquisicions.cat_dep',Auth::user()->user_iddependencia)
             ->get();
             $dependencia = Dependencia::where('iddependencia',Auth::user()->user_iddependencia)->first();
+            //
             return view('adquisiciones.indexcapdir',compact('adquisiciones','clasificaciones','dependencia','financiamientos','medidas','adquisiciones','fecha'));
         }
     }
@@ -102,11 +84,33 @@ class AdquisicionController extends Controller
             ->leftJoin('financiamientos','adquisicions.cat_fin','=','financiamientos.idfinanciamiento')
             ->leftJoin('proveedors','adquisicions.proveedor','=','proveedors.idproveedor')
             ->select('adquisicions.*','dependencias.dependencia_nombre','clasificacions.clasificacion_nombre','medidas.medida_nombre',
-            'financiamientos.financiamiento_nombre','proveedors.nombre_comercial')
+            'financiamientos.financiamiento_nombre','proveedors.nombre_comercial','proveedors.idproveedor')
+            ->where('adquisicion_estatus',3)
+            ->get();
+        //dd($adquisicionesaprobadas);
+        $tipo = 3;
+        return view('adquisiciones.aprobadas',compact('adquisicionesaprobadas', 'clasificaciones','medidas','financiamientos', 'proveedores','tipo'));
+    }
+
+    public function indexaceptadas(){
+        $clasificaciones = Clasificacion::where('clasificacion_estatus',1)->get();
+        $dependencias = Dependencia::where('dependencia_estatus',1)->get();
+        $financiamientos = Financiamiento::where('financimiento_estatus',1)->get();
+        $medidas = Medida::where('medida_estatus',1)->get();
+        $proveedores = Proveedor::all();
+        $adquisicionesaprobadas = DB::table('adquisicions')
+            ->join('dependencias','adquisicions.cat_dep','dependencias.iddependencia')
+            ->leftJoin('clasificacions','adquisicions.cat_clas','=','clasificacions.idclasificacion')
+            ->leftJoin('medidas','adquisicions.cat_med','=','medidas.idmedida')
+            ->leftJoin('financiamientos','adquisicions.cat_fin','=','financiamientos.idfinanciamiento')
+            ->leftJoin('proveedors','adquisicions.proveedor','=','proveedors.idproveedor')
+            ->select('adquisicions.*','dependencias.dependencia_nombre','clasificacions.clasificacion_nombre','medidas.medida_nombre',
+            'financiamientos.financiamiento_nombre','proveedors.nombre_comercial','proveedors.idproveedor')
             ->where('adquisicion_estatus',2)
             ->get();
         //dd($adquisicionesaprobadas);
-            return view('adquisiciones.aprobadas',compact('adquisicionesaprobadas', 'clasificaciones','medidas','financiamientos', 'proveedores'));
+        $tipo = 2;
+        return view('adquisiciones.aprobadas',compact('adquisicionesaprobadas', 'clasificaciones','medidas','financiamientos', 'proveedores','tipo'));
     }
 
     public function indexrechazadas(){
@@ -124,83 +128,58 @@ class AdquisicionController extends Controller
     public function agregaradquisicion(Request $request){
          //dd($request);
         
-        $request->validate([
-            //'fingreso'=>'required',
-            'folio'=>'required | min:5 | max:5',
-            'dependencia'=>'required'
-            // 'clasificacion'=>'required',
-            // 'umedida'=>'required',
-            // 'ffinanciamiento'=>'required',
-            // 'dpresentado'=>'required | mimes:pdf | max:2028',
-            
-        ]);
         //dd($request);
-        $ext = '.pdf';
-        $ndocumento = NULL;
-        if($request->dpresentado){
-            $request->validate([
-                'dpresentado' => 'mimes:pdf|max:2048'
-            ]);
-            $destinationPath = public_path('documentos/documentospresentados');
-            $dpresentado= $request->dpresentado;
-            $ndocumento = $request->folio.'-'.date('y').'_dpresentado'.$ext;
-            $dpresentado->move($destinationPath,$ndocumento);
-        }
-
-        $ninvestigacion = NULL;
-        if($request->imercado){
-            $request->validate([
-                'imercado' => 'mimes:pdf|max:2048'
-            ]);
-            $destinationPath = public_path('documentos/investigaciondemercado');
-            $imercado= $request->imercado;
-            $ninvestigacion = $request->folio.'-'.date('y').'_imercado'.$ext;
-            $imercado->move($destinationPath,$ninvestigacion);
-        }
-
-        $nresrequi = NULL;
-        if($request->rrequisitoria){
-            $request->validate([
-                'rrequisitoria' => 'mimes:pdf|max:2048'
-            ]);
-            $destinationPath = public_path('documentos/respuestarequisitoria');
-            $rrequisitoria= $request->rrequisitoria;
-            $nresrequi = $request->folio.'-'.date('y').'_rrequisitoria'.$ext;
-            $rrequisitoria->move($destinationPath,$nresrequi);
-        }
-        try {
-            $nadquisicion = new Adquisicion;
-            $nadquisicion->fechaadqui = date('Y-m-d');
-            $nadquisicion->folio = $request->folio.'-'.date('y');
-            $nadquisicion->partida = $request->ppresupuestal;
-            $nadquisicion->descripcion = $request->dgeneral;
-            $nadquisicion->descripcionadqui = $request->dadquisicion;
-            $nadquisicion->monto = $request->monto;
-            $nadquisicion->proveedor = $request->proveedor;
-            $nadquisicion->fechaaprox = $request->faprox;
-            $nadquisicion->fechaentrega = $request->fentrega;
-            if($request->observaciones){
-                $nadquisicion->observaciones = $request->observaciones.' con fecha:'.date("d/m/Y h:i:s A");  
+        $cadena = '';
+        for ($i=0; $i < 9; $i++) { 
+            if(request("partida".$i) && request("cantidad".$i) && request("unidad".$i) && request("des".$i)){
+                // dd('entre');
+                $cadena = $cadena.'Partida: '.request("partida".$i) .' Cantidad: '.request("cantidad".$i).'   Unidad: '.request("unidad".$i).'   Descripción: '.request("des".$i)."\n";
             }
-            $nadquisicion->cat_dep = $request->dependencia;
-            $nadquisicion->cat_clas = $request->clasificacion;
-            $nadquisicion->cat_med = $request->umedida;
-            $nadquisicion->cat_fin = $request->ffinanciamiento;
-            $nadquisicion->documento = $ndocumento;
-            $nadquisicion->investigacion = $ninvestigacion;
-            $nadquisicion->resrequi = $nresrequi;
-            $nadquisicion->save();
-            return back()->with('success', 'Adquisición guardada exitosamente!');
-        } catch (\Throwable $th) {
-            return back()->with('error', 'Folio de adquisición ya existente!');
         }
-        // dd($nadquisicion);
+        $folio_1 = $request->folio.'-'.date('y');
+        //dd($folio_1);
+        $ext = '.pdf';
+        if($request->ireferencia){
+            $request->validate([
+                'ireferencia' => ' file | max:2048'
+            ]);
+            $destinationPath = public_path('documentos/referencias');
+            $ireferencia= $request->ireferencia;
+            $ndocumento = $folio_1.'_ireferencia'.$ext;
+            $ireferencia->move($destinationPath,$ndocumento);
+        }
+
+        if($request->spresupuestal){
+            $request->validate([
+                'spresupuestal' => ' file | max:2048'
+            ]);
+            $destinationPath_1 = public_path('documentos/presupuestal');
+            $spresupuestal= $request->spresupuestal;
+            $ndocumento_1 = $folio_1.'_spresupuestal'.$ext;
+            $spresupuestal->move($destinationPath_1,$ndocumento_1);
+        }
+        $requi = 'Partida: '.$request->partida.' Cantidad: '.$request->cantidad.'   Unidad: '.$request->unidad.'   Descripción: '.$request->des."\n";
+        $nuevaadqui = new Adquisicion;
+        $nuevaadqui->fechaadqui = date('Y-m-d');
+        $nuevaadqui->folio = $folio_1;
+        $nuevaadqui->cat_dep = $request->dependencia;
+        $nuevaadqui->partida = strtoupper($request->ppresupuestal);
+        $nuevaadqui->adqui_norequi = $request->nrequisicion;
+        $nuevaadqui->adqui_refe = $ndocumento;
+        $nuevaadqui->adqui_presupuesto = $ndocumento_1;
+        $nuevaadqui->adqui_contenido = $requi.$cadena;
+        //dd($nuevaadqui);
+        $nuevaadqui->save();
+        return back()->with('success', 'Adquisición agregada exitosamente!');
     }
 
     public function actualizaradquisicion($id, Request $request){
         //dd($id,$request);
         $ext = '.pdf';
         if($request->dpresentado_1){
+            $request->validate([
+                'dpresentado_1' => ' file | max:2048'
+            ]);
             $destinationPath = public_path('documentos/documentospresentados');
             $dpresentado= $request->dpresentado_1;
             $ndocumento = $request->folio_1.'_dpresentado'.$ext;
@@ -208,6 +187,9 @@ class AdquisicionController extends Controller
         }
 
         if($request->imercado_1){
+            $request->validate([
+                'imercado_1' => ' file | max:2048'
+            ]);
             $destinationPath_1 = public_path('documentos/investigaciondemercado');
             $imercado= $request->imercado_1;
             $ndocumento_1 = $request->folio_1.'_imercado'.$ext;
@@ -215,6 +197,9 @@ class AdquisicionController extends Controller
         }
 
         if($request->rrequisitoria_1){
+            $request->validate([
+                'rrequisitoria_1' => ' file | max:2048'
+            ]);
             $destinationPath_2 = public_path('documentos/respuestarequisitoria');
             $rrequisitoria= $request->rrequisitoria_1;
             $ndocumento_2 = $request->folio_1.'_rrequisitoria'.$ext;
@@ -241,7 +226,9 @@ class AdquisicionController extends Controller
         if($request->ffinanciamiento_1){
             $actadqui->cat_fin = $request->ffinanciamiento_1;
         }
-        if (strlen($request->proveedor_1) > 2) {
+        
+        if ($request->proveedor_1) {
+            //dd($request->proveedor_1);
             $prove = explode("-",$request->proveedor_1);
             $actadqui->proveedor = $prove[0];    
         }
@@ -252,7 +239,7 @@ class AdquisicionController extends Controller
         $actadqui->descripcion = $request->dgeneral_1;
         $actadqui->descripcionadqui = $request->dadquisicion_1;
         if($actadqui->observaciones){
-            $actadqui->observaciones = $actadqui->observaciones." \n ".$request->observaciones_1.' con fecha:'.date("d/m/Y h:i:s A");
+            $actadqui->observaciones = $actadqui->observaciones."\n ".$request->observaciones_1.' con fecha:'.date("d/m/Y h:i:s A");
         }else{
             $actadqui->observaciones = $request->observaciones_1.' con fecha:'.date("d/m/Y h:i:s A");
         }
@@ -269,22 +256,71 @@ class AdquisicionController extends Controller
         return back()->with('success', 'Adquisición actualizada exitosamente!');
     }
 
-    // public function camadquiestatus($id,Request $request){
-    //     $request->validate([
-    //         'estatus_adqui'=>'required'
-    //     ]);
-    //     //dd($request);
-    //     $camadquiesatus = Adquisicion::find($id);
-    //     if($request->estatus_adqui==2){
-    //         $camadquiesatus->adquisicion_estatus = 2;
-    //         $camadquiesatus->save();
-    //         return back()->with('success', 'Adquisición aprobada exitosamente!');
-    //     }elseif($request->estatus_adqui==0){
-    //         $camadquiesatus->adquisicion_estatus = 0;
-    //         $camadquiesatus->save();
-    //         return back()->with('success', 'Adquisición rechazada!');
-    //     }else{
-    //         return back()->with('error', 'No se pudo realizar la acción!');
-    //     }
-    // }
+    public function almacenespera(){
+        $fecha = date("d/m/Y");
+        $clasificaciones = Clasificacion::where('clasificacion_estatus',1)->get();
+        $dependencias = Dependencia::where('dependencia_estatus',1)->get();
+        $financiamientos = Financiamiento::where('financimiento_estatus',1)->get();
+        $medidas = Medida::where('medida_estatus',1)->get();
+        $adquisiciones = DB::table('adquisicions')
+        ->join('dependencias','adquisicions.cat_dep','dependencias.iddependencia')
+        ->leftJoin('clasificacions','adquisicions.cat_clas','=','clasificacions.idclasificacion')
+        ->leftJoin('medidas','adquisicions.cat_med','=','medidas.idmedida')
+        ->leftJoin('financiamientos','adquisicions.cat_fin','=','financiamientos.idfinanciamiento')
+        ->leftJoin('proveedors','adquisicions.proveedor','=','proveedors.idproveedor')
+        ->select('adquisicions.*','dependencias.dependencia_nombre','clasificacions.clasificacion_nombre','medidas.medida_nombre',
+        'financiamientos.financiamiento_nombre','proveedors.idproveedor','proveedors.nombre_comercial')
+        ->where('adquisicion_estatus',4)
+        ->get();
+        //dd($adquisiciones);
+        $proveedores = Proveedor::all();
+        $tipo = 4;
+        return view('adquisiciones.indexalmacen',compact('tipo','clasificaciones','dependencias','financiamientos','medidas','adquisiciones','fecha','proveedores'));
+    }
+
+    public function enalmacen(){
+        
+        $adquisiciones = DB::table('adquisicions')
+        ->join('dependencias','adquisicions.cat_dep','dependencias.iddependencia')
+        ->leftJoin('clasificacions','adquisicions.cat_clas','=','clasificacions.idclasificacion')
+        ->leftJoin('medidas','adquisicions.cat_med','=','medidas.idmedida')
+        ->leftJoin('financiamientos','adquisicions.cat_fin','=','financiamientos.idfinanciamiento')
+        ->leftJoin('proveedors','adquisicions.proveedor','=','proveedors.idproveedor')
+        ->select('adquisicions.*','dependencias.dependencia_nombre','clasificacions.clasificacion_nombre','medidas.medida_nombre',
+        'financiamientos.financiamiento_nombre','proveedors.idproveedor','proveedors.nombre_comercial')
+        ->where('adquisicion_estatus',5)
+        ->get();
+        $tipo = 5;
+        return view('adquisiciones.almacen',compact('adquisiciones','tipo'));
+    }
+
+    public function almancenentregada(){
+        
+        $adquisiciones = DB::table('adquisicions')
+        ->join('dependencias','adquisicions.cat_dep','dependencias.iddependencia')
+        ->leftJoin('clasificacions','adquisicions.cat_clas','=','clasificacions.idclasificacion')
+        ->leftJoin('medidas','adquisicions.cat_med','=','medidas.idmedida')
+        ->leftJoin('financiamientos','adquisicions.cat_fin','=','financiamientos.idfinanciamiento')
+        ->leftJoin('proveedors','adquisicions.proveedor','=','proveedors.idproveedor')
+        ->select('adquisicions.*','dependencias.dependencia_nombre','clasificacions.clasificacion_nombre','medidas.medida_nombre',
+        'financiamientos.financiamiento_nombre','proveedors.idproveedor','proveedors.nombre_comercial')
+        ->where('adquisicion_estatus',6)
+        ->get();
+        //dd($adquisiciones);
+        $tipo = 6;
+        return view('adquisiciones.almacen',compact('adquisiciones', 'tipo'));
+    }
+
+    public function observacionadqui($id, Request $request){
+        $adquisicion = Adquisicion::find($id);
+        if ($adquisicion->observaciones == null) {
+            $adquisicion->observaciones = Auth::user()->name.': '.$request->observacion.' Con fecha '.date("d/m/Y h:i:s A");
+        } else {
+            $adquisicion->observaciones =$adquisicion->observaciones."\n".Auth::user()->name.': '.$request->observacion.' Con fecha '.date("d/m/Y h:i:s A");
+        }
+        $adquisicion->save();
+        return back()->with('success', 'Observación agregada correctamente!');
+        
+    }
+
 }

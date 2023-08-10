@@ -77,12 +77,7 @@
                 <div class="row">
                     <div class="col-9 mt-2">
                         <label for="" class="form-lable">Proveedores</label>
-                        <input list="proveedores" id="proveedor_1" name="proveedor_1" class="form-control" value="{{$adquisicion->idproveedor.'-'.$adquisicion->nombre_comercial ?? ''}}" readonly>
-                        <datalist id="proveedores">
-                            @foreach ($proveedores as $proveedor)
-                                <option value="{{$proveedor->idproveedor}}-{{$proveedor->nombre_comercial}}"></option>
-                            @endforeach
-                        </datalist>
+                        <input list="proveedores" id="proveedor_1" name="proveedor_1" class="form-control" value="{{$adquisicion->idproveedor.'-'.$adquisicion->nombre_comercial ?? ''}}" readonly>                        
                     </div>
                     <div class="col-3 mt-2">
                         <label for="" class="form-lable">Monto $</label>
@@ -91,7 +86,7 @@
                 </div>
                 <div class="row">
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Fecha de adquisición</label>
+                        <label for="" class="form-lable">Fecha de adjudicación</label>
                         <input type="date" name="faprox_1" id="faprox_1" class="form-control @error('faprox_1') is-invalid @enderror" value="{{$adquisicion->fechaaprox}}" readonly>
                     </div>
                     <div class="col-6 mt-2">
@@ -109,20 +104,36 @@
                         <textarea readonly name="dadquisicion_1" id="dadquisicion_1" cols="45" rows="5" class="form-control @error('dadquisicion_1') is-invalid @enderror" style="resize: none;">{{$adquisicion->descripcionadqui}}</textarea>
                     </div>
                     <div class="col-4 mt-2">
-                        <label for="" class="form-lable">Observaciones</label>
+                        <label for="" class="form-lable">Observaciones<b class="text-danger">*</b></label>
                         <textarea name="observaciones_1" id="observaciones_1" cols="45" rows="5" class="form-control @error('observaciones_1') is-invalid @enderror" style="resize: none;" required></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-2 ">
-                        <label for="" class="form-label">Estaus de adquisición</label>
-                        <select name="estatus_adqui" id="estatus_adqui" class="form-select">
-                            <option value="4">Seleccionar una opción...</option>
-                            <option value="5">Entregada</option>
-                        </select>
+                        @if (Auth::user()->categoria == 'almacen')
+                        <label for="" class="form-label">Estatus de adquisición</label>
+                            @if ($tipo == 4)
+                                <select name="estatus_adqui" id="estatus_adqui" class="form-select">
+                                    <option value="4">Seleccionar una opción...</option>
+                                    <option value="5">Surtido por el proveedor</option>
+                                </select>
+                            @elseif($tipo == 5)
+                                <select name="estatus_adqui" id="estatus_adqui" class="form-select">
+                                    <option value="5">Seleccionar una opción...</option>
+                                    <option value="6">Entregado</option>
+                                </select>
+                            @elseif($tipo == 6)
+                                
+                            @endif
+                        @else
+                            <label for=""><p>No tiene la categoria para editar este tipo de requisición</p></label>
+                        @endif
+                        
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-2">Actualizar datos</button>
+                @if (Auth::user()->categoria == 'almacen' && $tipo != 6)
+                    <button type="submit" class="btn btn-primary mt-2">Actualizar datos</button>
+                @endif
             </form>
         </div>
         <div class="modal-footer">

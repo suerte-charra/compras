@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Catalogo de Proveedores</h4>
+                    <h4>Catálogo de Proveedores</h4>
                     <div class="row">
                         <div class="col align-self-end text-end">
                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
@@ -49,6 +49,7 @@
                                     <th>Clave</th>
                                     <th>Rfc</th>
                                     <th>Nombre</th>
+                                    <th>Telefono</th>
                                     <th>Dirección</th>
                                     <th>Correo</th>
                                     <th>Giro</th>
@@ -61,6 +62,7 @@
                                     <td>{{$proveedor->idproveedor}}</td>
                                     <td>{{$proveedor->rfc}}</td>
                                     <td>{{$proveedor->nombre_comercial}}</td>
+                                    <td>{{$proveedor->telefono}}</td>
                                     <td>{{$proveedor->direccion}}</td>
                                     <td>{{$proveedor->correo}}</td>
                                     <td>{{$proveedor->giro}}</td>
@@ -81,6 +83,7 @@
                                     <th>Clave</th>
                                     <th>Rfc</th>
                                     <th>Nombre</th>
+                                    <th>Teléfono</th>
                                     <th>Dirección</th>
                                     <th>Correo</th>
                                     <th>Giro</th>
@@ -93,6 +96,7 @@
                                     <td>{{$proveedor_1->idproveedor}}</td>
                                     <td>{{$proveedor_1->rfc}}</td>
                                     <td>{{$proveedor_1->nombre_comercial}}</td>
+                                    <td>{{$proveedor_1->telefono}}</td>
                                     <td>{{$proveedor_1->direccion}}</td>
                                     <td>{{$proveedor_1->correo}}</td>
                                     <td>{{$proveedor_1->giro}}</td>
@@ -186,21 +190,22 @@
 <!-- Modal -->
 <div class="modal fade" id="agregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+        <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Agregar proveedor</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="staticBackdropLabel">Agregar proveedor</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="{{route('agregarproveedor')}}" method="POST">
+            <form action="{{route('agregarproveedor')}}" method="POST">
+                
             @csrf
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="" class="form-label">Nombre comercial</label>
+            <div class="row border">
+                <div class="col-md-4 mt-2">
+                    <label for="" class="form-label">Nombre comercial<b class="text-danger">*</b></label>
                     <input type="text" class="form-control" name="ncomercial" id="ncomercial">
                 </div>
-                <div class="col-md-4">
-                    <label for="" class="form-label">Rfc</label>
+                <div class="col-md-4 mt-2">
+                    <label for="" class="form-label">Rfc<b class="text-danger">*</b></label>
                     <input type="text" class="form-control @error('rfc') is-invalid @enderror" name="rfc" id="rfc" minlength="13" maxlength="14" required>
                     @error('rfc')
                         <span class="invalid-feedback" role="alert">
@@ -208,32 +213,41 @@
                         </span>
                     @enderror
                 </div>
-                <div class="col-md-4">
-                    <label for="" class="form-label">Dirección</label>
+                <div class="col-md-4 mb-2 mt-2">
+                    <label for="" class="form-label">Dirección<b class="text-danger">*</b></label>
                     <input type="text" class="form-control" name="direccion" id="direccion">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="" class="form-label">Correo</label>
+            <br>
+            <div class="row border">
+                <div class="col-md-4 mt-2">
+                    <label for="" class="form-label">Correo<b class="text-danger">*</b></label>
                     <input type="email" class="form-control" name="correo" id="correo">
                 </div>
-                <div class="col-md-4">
-                    <label for="" class="form-label">Giro</label>
-                    <input type="email" class="form-control" name="giro" id="giro">
+                <div class="col-md-4 mt-2">
+                    <label for="" class="form-label">Giro<b class="text-danger">*</b></label>
+                    <input type="text" class="form-control" name="giro" id="giro">
                 </div>
-                <div class="col-md-4">
-                    <label for="" class="form-label">Nombre</label>
-                    <input type="email" class="form-control" name="nombre" id="nombre">
+                <div class="col-md-4 mb-2 mt-2">
+                    <label for="" class="form-label">Nombre<b class="text-danger">*</b></label>
+                    <input type="text" class="form-control" name="nombre" id="nombre">
                 </div>
             </div>
+            <br>
+            <div class="row border">
+                <div class="col-md-6 mt-2">
+                    <label for="">Número(s) de telefono</label>
+                    <textarea name="telefono" id="telefono" cols="50" rows="5" style="resize:none"></textarea>
+                </div>
+            </div>
+            <br>
             <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('¿Desea guardar este nuevo proveedor?')">Guardar</button>
-          </form>
+            </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
-      </div>
+        </div>
     </div>
 </div>
 </div>

@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Catalogo de fuentes de financiamiento</h4>
+                    <h4>Catálogo de fuentes de financiamiento</h4>
                     <div class="row">
                         <div class="col align-self-end text-end">
                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
@@ -44,7 +44,7 @@
                             <thead>
                                 <tr>
                                     <th>Clave</th>
-                                    <th>Nombre</th>
+                                    <th>Nombre<b class="text-danger">*</b></th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -176,7 +176,7 @@
             <div class="modal-body">
                 <form action="{{route('agregarfinanciamiento')}}" method="POST">
                     @csrf
-                    <label for="" class="form-label">Nombre fuente de financiamiento</label>
+                    <label for="" class="form-label">Nombre fuente de financiamiento<b class="text-danger">*</b></label>
                     <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                     @error('nombre')
                         <span class="invalid-feedback" role="alert">

@@ -23,7 +23,7 @@
                     @if (Auth::user()->categoria == 'cap')
                         <div class="row">
                             <div class="col align-self-end text-end">
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#agregar">Agregar Adquision</button>
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#agregar1">Agregar Adquision</button>
                             </div>
                         </div>
                     @endif
@@ -36,8 +36,17 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <label>{{ $error }}</label>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="container border">
-                        <h5 class="text-center mt-2">Adquisiciones en procesos</h5>
+                        <h5 class="text-center mt-2">Adquisiciones recibidas</h5>
                         <table id="example" class="table table-striped dt-responsive nowrap border" style="width:100%;">
                             <thead>
                                 <tr>
@@ -48,14 +57,11 @@
                                     <th>Observaciones</th>
                                     <th>Documentación</th>
                                     <th>Partida Presupuestal</th>
-                                    <th>Descripción General</th>
-                                    <th>Clasificación</th>
-                                    <th>Unidad de Medida</th>
                                     <th>Desc. Adquisición</th>
                                     <th>Fuentes de Financiamiento</th>
                                     <th>Monto</th>
                                     <th>Proveedor</th>
-                                    <th>Fecha de Adquisición</th>
+                                    <th>Fecha de Adjudicación</th>
                                     <th>Fecha Entrega</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -86,9 +92,6 @@
                                         <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#documentacion{{$adquisicion->idadquisicion}}"><i class="fa-regular fa-file"></i> Documentos</button>
                                     </td>
                                     <td>{{$adquisicion->partida ?? 'No se agrego partida presupuestal'}}</td>
-                                    <td>{{$adquisicion->descripcion}}</td>
-                                    <td>{{$adquisicion->clasificacion_nombre}}</td>
-                                    <td>{{$adquisicion->medida_nombre}}</td>
                                     <td>{{$adquisicion->descripcionadqui}}</td>
                                     <td>{{$adquisicion->financiamiento_nombre}}</td>
                                     <td>${{number_format($adquisicion->monto,2, '.', ',')}}</td>
@@ -158,11 +161,6 @@
             });
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2();
-        });
-    </script> --}}
 @endsection
 <!-- Modal -->
     <div class="modal fade" id="agregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -182,7 +180,7 @@
                     </div>
                     <div class="col-3">
                         <label for="" class="form-lable">Folio</label>
-                        <input type="text" name="folio" id="folio" minlength="5" maxlength="5" pattern="[0-9]{5,5}" class="form-control @error('folio') is-invalid @enderror" value="{{ old('folio') }}" required>
+                        <input type="text" name="folio" id="folio" minlength="4" maxlength="5" pattern="[0-9]{4,5}" class="form-control @error('folio') is-invalid @enderror" value="{{ old('folio') }}" required>
                     </div>
                     <div class="col-6"> 
                         <label for="" class="form-lable">Unidad presupuestaria responsable</label>
@@ -258,7 +256,7 @@
                         <input type="text" name="proveedor" id="proveedor" class="form-control @error('proveedor') is-invalid @enderror">
                     </div>
                     <div class="col-3 mt-2">
-                        <label for="" class="form-lable">Fecha de adquisición</label>
+                        <label for="" class="form-lable">Fecha de adjudicación</label>
                         <input type="date" name="faprox" id="faprox" class="form-control @error('faprox') is-invalid @enderror">
                     </div>
                     <div class="col-3 mt-2">

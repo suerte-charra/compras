@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     {{-- {{ __('Dashboard') }} --}}
-                    <h4>Formatos de decarga</h4>
+                    <h4>Formatos de descarga</h4>
                 </div>
 
                 <div class="card-body">
@@ -34,7 +34,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">DRM.01 Envío de Expedientes</h5>
-                                    <a href="documentos/formatos/DRM.01 Envio de Expedientes.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a>
+                                    {{-- <a href="documentos/formatos/DRM.01 Envio de Expedientes.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a> --}}
                                 </div>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">DRM.02 Requisición</h5>
-                                    <a href="documentos/formatos/DRM.02 Requisicion.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a>
+                                    {{-- <a href="documentos/formatos/DRM.02 Requisicion.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a> --}}
                                 </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">DRM.03 Anexo Técnico de DTIC</h5>
-                                    <a href="documentos/formatos/DRM.3 Anexo Tecnico de DTIC.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a>
+                                    {{-- <a href="documentos/formatos/DRM.3 Anexo Tecnico de DTIC.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a> --}}
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">DRM.04 Suficiencia Presupuestal</h5>
-                                    <a href="documentos/formatos/DRM.04 Suficiencia Presupuestal.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a>
+                                    {{-- <a href="documentos/formatos/DRM.04 Suficiencia Presupuestal.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a> --}}
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">DRM.05 Análisis e Investigación de Mercado</h5>
-                                    <a href="documentos/formatos/DRM.05 Analisis e Investigacion de Mercado.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a>
+                                    {{-- <a href="documentos/formatos/DRM.05 Analisis e Investigacion de Mercado.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a> --}}
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">DRM.06 Anexo Técnico</h5>
-                                    <a href="documentos/formatos/DRM.06 Anexo Tecnico.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a>
+                                    {{-- <a href="documentos/formatos/DRM.06 Anexo Tecnico.pdf" target="_blank" class="btn btn-primary btn-sm">Descargar</a> --}}
                                 </div>
                             </div>
                         </div>

@@ -14,10 +14,10 @@ class DependenciaController extends Controller
     }
     public function agregardependencia(Request $request){
         $request->validate([
-            'nombre' => 'required | string | min:2'
+            'nombre' => 'required | string | min:2 |unique:dependencias,dependencia_nombre'
         ]);
         $nuevadependencia = new Dependencia;
-        $nuevadependencia->dependencia_nombre = $request->nombre;
+        $nuevadependencia->dependencia_nombre = strtoupper($request->nombre);
         $nuevadependencia->save();
         return back()->with('success', 'Dependencia guardada exitosamente!');
     }

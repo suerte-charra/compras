@@ -20,9 +20,38 @@
                 <div class="card-header">
                     <h4>Lista de adquisiciones</h4>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <img src="{{ asset('img/estatus.png') }}" class="img-fluid mt-2" style="margin-left: 15px;" alt="...">
+                <div class="row m-2">
+                    <div class="row col-12">
+                        {{-- <img src="{{ asset('img/estatus.png') }}" class="img-fluid mt-2" style="margin-left: 15px;" alt="..."> --}}
+                        <label for=""><h3>Estatus de las adquisiciones</h3></label>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(117, 0, 0);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>No aprobada</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(218, 205, 205);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>Recibida</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(247, 239, 134);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>Aceptada</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(231, 195, 148);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>Aprobada</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(255, 157, 45);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>En espera</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(63, 236, 72);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>En almacen</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(52, 88, 245);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>Entregada</p>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -32,7 +61,7 @@
                         </div>
                     @endif
                     <div class="container border">
-                        <h5 class="text-center mt-2">Total de adquisiciones</h5>
+                        {{-- <h5 class="text-center mt-2">Total de adquisiciones</h5> --}}
                         <table id="example" class="table dt-responsive nowrap border" style="width:100%;">
                             <thead>
                                 <tr>
@@ -50,7 +79,7 @@
                                     <th>Fuentes de Financiamiento</th>
                                     <th>Monto</th>
                                     <th>Proveedor</th>
-                                    <th>Fecha de Adquisición</th>
+                                    <th>Fecha de Adjudicación</th>
                                     <th>Fecha Entrega</th>
                                 </tr>
                             </thead>
@@ -58,15 +87,23 @@
                                 @foreach($adquisiciones as $adquisicion)
                                 <tr 
                                 @if (Auth::user()->categoria <> 'admin' && Auth::user()->categoria <> 'cap')
-                                    @if ($adquisicion->adquisicion_estatus == 2)
-                                        style = "color:black;background:#7BCB62;"
+                                    @if ($adquisicion->adquisicion_estatus == 0)
+                                        style = "color:white; background:rgb(117, 0, 0);"
                                     @elseif ($adquisicion->adquisicion_estatus == 1)
-                                        style = "color:black;background:#FFFFFF;"
-                                    @elseif ($adquisicion->adquisicion_estatus == 0)
-                                        style = "color:black;background:#CB6262;"
-                                     @endif  
+                                        style = "color:black; background:rgb(218, 205, 205);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 2)
+                                        style = "color:black; background:rgb(247, 239, 134);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 3)
+                                        style = "color:black; background:rgb(231, 195, 148);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 4)
+                                        style = "color:black; background:rgb(255, 157, 45);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 5)
+                                        style = "color:black; background:rgb(63, 236, 72);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 6)
+                                        style = "color:black; background:rgb(52, 88, 245);"
+                                    @endif 
                                 @endif
-                               >
+                                >
                                     <td>{{$adquisicion->fechaadqui}}</td>
                                     <td>{{$adquisicion->folio}}</td>
                                     <td>{{$adquisicion->dependencia_nombre}}</td>

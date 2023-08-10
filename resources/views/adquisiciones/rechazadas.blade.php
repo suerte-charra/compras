@@ -28,7 +28,7 @@
                         </div>
                     @endif
                     <div class="container border">
-                        <h5 class="text-center mt-2">Adquisiciones no aprobadas</h5>
+                        <h5 class="text-center mt-2">Adquisiciones rechazadas</h5>
                         <table id="example" class="table table-striped dt-responsive nowrap border" style="width:100%;">
                             <thead>
                                 <tr>
@@ -46,7 +46,7 @@
                                     <th>Fuentes de Financiamiento</th>
                                     <th>Monto</th>
                                     <th>Proveedor</th>
-                                    <th>Fecha de Adquisición</th>
+                                    <th>Fecha de Adjudicación</th>
                                     <th>Fecha Entrega</th>
                                 </tr>
                             </thead>

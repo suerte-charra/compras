@@ -19,7 +19,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Lista de adquisiciones</h4>
+                    <h4>Lista de adquisiciones almacen</h4>
                     @if (Auth::user()->categoria == 'cap')
                         <div class="row">
                             <div class="col align-self-end text-end">
@@ -37,7 +37,7 @@
                         </div>
                     @endif
                     <div class="container border">
-                        <h5 class="text-center mt-2">Adquisiciones en procesos</h5>
+                        <h5 class="text-center mt-2">Adquisiciones adjudicadas al proveedor</h5>
                         <table id="example" class="table table-striped dt-responsive nowrap border" style="width:100%;">
                             <thead>
                                 <tr>
@@ -56,7 +56,7 @@
                                     <th>Fuentes de Financiamiento</th>
                                     <th>Monto</th>
                                     <th>Proveedor</th>
-                                    <th>Fecha de Adquisición</th>
+                                    <th>Fecha de Adjudicación</th>
                                     <th>Fecha Entrega</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -88,9 +88,13 @@
                                     </td>
                                     <td>
                                         @if ($adquisicion->adquisicion_estatus == 4)
-                                            EN ALMACEN
-                                        @else
+                                            A LA ESPERA DEL PROVEEDOR
+                                        @elseif($adquisicion->adquisicion_estatus == 5)
+                                            EN EL ALMANCEN
+                                        @elseif($adquisicion->adquisicion_estatus == 6)
                                             ENTREGADO
+                                        @else
+                                            ERROR
                                         @endif
                                     </td>
                                     <td>{{$adquisicion->partida ?? 'No se agrego partida presupuestal'}}</td>
@@ -271,7 +275,7 @@
                         <input type="text" name="proveedor" id="proveedor" class="form-control @error('proveedor') is-invalid @enderror">
                     </div>
                     <div class="col-3 mt-2">
-                        <label for="" class="form-lable">Fecha de adquisición</label>
+                        <label for="" class="form-lable">Fecha de adjudicación</label>
                         <input type="date" name="faprox" id="faprox" class="form-control @error('faprox') is-invalid @enderror">
                     </div>
                     <div class="col-3 mt-2">

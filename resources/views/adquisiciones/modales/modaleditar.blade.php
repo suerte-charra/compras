@@ -34,7 +34,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-2 border">
-                        <label for="" class="form-label">Documento presentado</label>
+                        <label for="" class="form-label">Requisición digitalizada</label>
                         @if($adquisicion->documento)
                             <a href="{{asset('/documentos/documentospresentados/'.$adquisicion->documento)}}" target="_blank">{{$adquisicion->documento}}</a>
                         @else
@@ -54,7 +54,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-2 border">
-                        <label for="" class="form-label">Respuesta requisitoria</label>
+                        <label for="" class="form-label" title="Documento que avala si es aceptada o no">Respuesta requisitoria</label>
                         @if($adquisicion->resrequi)
                             <a href="{{asset('/documentos/respuestarequisitoria/'.$adquisicion->resrequi)}}" target="_blank">{{$adquisicion->resrequi}}</a>
                         @else
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 mt-2 border">
+                    <div class="col-md-6 mt-2 border">
                         <label for="" class="form-label">Clasificaciones</label>
                         <input type="text" name="nactual" id="nactual" class="form-control" value="{{$adquisicion->clasificacion_nombre}}" readonly>
                         <select name="clasificacion_1" id="clasificacion_1" class="form-select @error('clasificacion_1') is-invalid @enderror">
@@ -80,7 +80,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 mt-2 border">
+                    <div class="col-md-6 mt-2 border">
                         <label for="" class="form-label">Unidad de medida</label>
                         <input type="text" name="nactual" id="nactual" class="form-control" value="{{$adquisicion->medida_nombre}}" readonly>
                         <select name="umedida_1" id="umedida_1" class="form-select @error('umedida_1') is-invalid @enderror">
@@ -88,18 +88,6 @@
                             @foreach($medidas as $medida)
                                 @if($adquisicion->medida_nombre <> $medida->medida_nombre)
                                     <option value="{{$medida->idmedida}}">{{$medida->medida_nombre}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-4 mt-2 border">
-                        <label for="" class="form-label">Fuentes de financimaiento</label>
-                        <input type="text" name="nactual" id="nactual" class="form-control" value="{{$adquisicion->financiamiento_nombre}}" readonly>
-                        <select name="ffinanciamiento_1" id="ffinanciamiento_1" class="form-select @error('ffinanciamiento_1') is-invalid @enderror">
-                            <option value="">Si desea cambiar seleccione una opción</option>
-                            @foreach($financiamientos as $financiamiento)
-                                @if($adquisicion->financiamiento_nombre <> $financiamiento->financiamiento_nombre)
-                                    <option value="{{$financiamiento->idfinanciamiento}}">{{$financiamiento->financiamiento_nombre}}</option>
                                 @endif
                             @endforeach
                         </select>
@@ -122,7 +110,7 @@
                 </div>
                 <div class="row">
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Fecha de adquisición</label>
+                        <label for="" class="form-lable">Fecha de adjudicación</label>
                         <input type="date" name="faprox_1" id="faprox_1" class="form-control @error('faprox_1') is-invalid @enderror" value="{{$adquisicion->fechaaprox}}">
                     </div>
                     <div class="col-6 mt-2">
@@ -140,7 +128,7 @@
                         <textarea name="dadquisicion_1" id="dadquisicion_1" cols="45" rows="5" class="form-control @error('dadquisicion_1') is-invalid @enderror" style="resize: none;">{{$adquisicion->descripcionadqui}}</textarea>
                     </div>
                     <div class="col-4 mt-2">
-                        <label for="" class="form-lable">Observaciones</label>
+                        <label for="" class="form-lable">Observaciones<b class="text-danger">*</b></label>
                         <textarea name="observaciones_1" id="observaciones_1" cols="45" rows="5" class="form-control @error('observaciones_1') is-invalid @enderror" style="resize: none;" required></textarea>
                     </div>
                 </div>
@@ -149,10 +137,8 @@
                         <label for="" class="form-label">Estaus de adquisición</label>
                         <select name="estatus_adqui" id="estatus_adqui" class="form-select">
                             <option value="1">Seleccionar una opción...</option>
+                            <option value="2">Aceptada</option>
                             <option value="0">No aprobada</option>
-                            <option value="3">Aceptada</option>
-                            <option value="2">Aprobada</option>
-                            <option value="4">En almacén</option>
                         </select>
                     </div>
                 </div>

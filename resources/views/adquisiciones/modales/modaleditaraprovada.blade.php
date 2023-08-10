@@ -26,13 +26,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-2 border">
-                        <label for="" class="form-label">Documento presentado</label>
+                        <label for="" class="form-label">Requisición digitalizada</label>
                         @if($adquisicionesaprobada->documento)
                             <a href="{{asset('/documentos/documentospresentados/'.$adquisicionesaprobada->documento)}}" target="_blank">{{$adquisicionesaprobada->documento}}</a>
                         @else
                             No tiene documento
+                            <input type="file" name="dpresentado_1" id="dpresentado_1" accept=".pdf" class="form-control @error('dpresentado_1') is-invalid @enderror">
                         @endif
-                        <input type="file" name="dpresentado_1" id="dpresentado_1" accept=".pdf" class="form-control @error('dpresentado_1') is-invalid @enderror">
                     </div>
                     <div class="col-md-6 mt-2 border">
                         <label for="" class="form-label">Investigación de mercado&nbsp;</label>
@@ -100,7 +100,7 @@
                 <div class="row">
                     <div class="col-9 mt-2">
                         <label for="" class="form-lable">Proveedores</label>
-                        <input list="proveedores" id="proveedor_1" name="proveedor_1" class="form-control" value="{{$adquisicionesaprobada->nombre_comercial ?? ''}}">
+                        <input list="proveedores" id="proveedor_1" name="proveedor_1" class="form-control" value="{{$adquisicionesaprobada->idproveedor.'-'.$adquisicionesaprobada->nombre_comercial ?? ''}}">
                         <datalist id="proveedores">
                             @foreach ($proveedores as $proveedor)
                                 <option value="{{$proveedor->idproveedor}}-{{$proveedor->nombre_comercial}}"></option>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="row">
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Fecha de adquisición</label>
+                        <label for="" class="form-lable">Fecha de adjudicación</label>
                         <input type="date" name="faprox_1" id="faprox_1" class="form-control @error('faprox_1') is-invalid @enderror" value="{{$adquisicionesaprobada->fechaaprox}}">
                     </div>
                     <div class="col-6 mt-2">
@@ -140,9 +140,16 @@
                     <div class="col-12 mt-2 ">
                         <label for="" class="form-label">Estaus de adquisición</label>
                         <select name="estatus_adqui" id="estatus_adqui" class="form-select">
-                            <option value="2">Seleccionar una opción...</option>
-                            <option value="0">No aprobada</option>
-                            <option value="4">En almacén</option>
+                            @if ($tipo == 2)
+                                <option value="2">Seleccionar una opción...</option>
+                                <option value="3">Autorizada</option>
+                                <option value="0">No aprobada</option>
+                            @elseif($tipo == 3)
+                                <option value="3">Seleccionar una opción...</option>
+                                <option value="4">A la espera del proveedor</option>
+                                <option value="0">No aprobada</option>
+                            @endif
+                            
                         </select>
                     </div>
                 </div>
@@ -154,5 +161,4 @@
         </div>
         </div>
     </div>
-  </div>
-  
+</div>

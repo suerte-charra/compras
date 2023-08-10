@@ -17,10 +17,10 @@ class ClasificacionController extends Controller
     public function agregarclasificacion(Request $request){
         //dd("Se agrega una clasificacion");
         $request->validate([
-            'nombre' => 'required | string | min:2'
+            'nombre' => 'required | string | min:2 | unique:clasificacions,clasificacion_nombre'
         ]);
         $nuevaclasificacion = new Clasificacion;
-        $nuevaclasificacion->clasificacion_nombre = $request->nombre;
+        $nuevaclasificacion->clasificacion_nombre = strtoupper($request->nombre);
         $nuevaclasificacion->save();
         return back()->with('success', 'Clasificación guardada exitosamente!');
     }

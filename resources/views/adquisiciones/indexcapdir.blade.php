@@ -25,9 +25,38 @@
                         </div>
                     @endif
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <img src="{{ asset('img/estatus.png') }}" class="img-fluid mt-2" style="margin-left: 15px;" alt="...">
+                <div class="row m-2">
+                    <div class="row col-12">
+                        {{-- <img src="{{ asset('img/estatus.png') }}" class="img-fluid mt-2" style="margin-left: 15px;" alt="..."> --}}
+                        <label for=""><h3>Estatus de las adquisiciones</h3></label>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(117, 0, 0);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>RECHAZADA</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(218, 205, 205);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>RECIBIDAS</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(247, 239, 134);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>RECEPCION ACEPTADA</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(231, 165, 67);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>AUTORIZANDO</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(63, 236, 72);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>ADJUDICADA A PROVEEDOR</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(183, 189, 182);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>ALMACEN</p>
+                        </div>
+                        <div class="col">
+                            <span style="height: 25px;width: 25px;background-color: rgb(52, 88, 245);border-radius: 50%;display: inline-block;" class="border border-dark"></span>
+                            <p>ENTREGADA</p>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -54,21 +83,30 @@
                                     <th>Fuentes de Financiamiento</th>
                                     <th>Monto</th>
                                     <th>Proveedor</th>
-                                    <th>Fecha de Adquisición</th>
+                                    <th>Fecha de Adjudicación</th>
                                     <th>Fecha Entrega</th>
                                     <th>Acciones</th>
+                                    <th>Requisición digitalizada</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($adquisiciones as $adquisicion)
                                 <tr 
                                 @if (Auth::user()->categoria <> 'admin')
-                                    @if ($adquisicion->adquisicion_estatus == 2)
-                                        style = "color:black;background:#7BCB62;"
+                                    @if ($adquisicion->adquisicion_estatus == 0)
+                                        style = "color:white; background:rgb(117, 0, 0);"
                                     @elseif ($adquisicion->adquisicion_estatus == 1)
-                                        style = "color:black;background:#FFFFFF;"
-                                    @elseif ($adquisicion->adquisicion_estatus == 0)
-                                        style = "color:black;background:#CB6262;"
+                                        style = "color:black; background:rgb(218, 205, 205);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 2)
+                                        style = "color:black; background:rgb(247, 239, 134);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 3)
+                                        style = "color:black; background:rgb(231, 165, 67);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 4)
+                                        style = "color:black; background:rgb(63, 236, 72);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 5)
+                                        style = "color:black; background:rgb(183, 189, 182);"
+                                    @elseif ($adquisicion->adquisicion_estatus == 6)
+                                        style = "color:black; background:rgb(52, 88, 245);"
                                     @endif  
                                 @endif
                                 >
@@ -94,7 +132,24 @@
                                     <td>{{$adquisicion->fechaaprox}}</td>
                                     <td>{{$adquisicion->fechaentrega}}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#accion{{$adquisicion->idadquisicion}}"><i class="fa-regular fa-pen-to-square"></i> Observación</button>
+                                        @if ($adquisicion->adquisicion_estatus > 0 && $adquisicion->adquisicion_estatus < 5)
+                                            <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#accion{{$adquisicion->idadquisicion}}"><i class="fa-regular fa-pen-to-square"></i> Observación</button>
+                                        @elseif($adquisicion->adquisicion_estatus == 5)
+                                            Ya se realizo la compra espere confirmacion de almancen.
+                                        @else
+                                            No se puede agregar observaciones
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($adquisicion->adquisicion_estatus == 2 && $adquisicion->documento == null)
+                                            Agregar requisicion digital.
+                                        @elseif ($adquisicion->adquisicion_estatus == 2 && $adquisicion->documento != null)
+                                            Ya no se puede subir el mismo documento
+                                        @elseif($adquisicion->adquisicion_estatus == 1)
+                                            No es necesario llenar el formato aun.
+                                        @elseif($adquisicion->adquisicion_estatus == 1)
+                                            No se puede agregar documento.
+                                        @endif
                                     </td>
                                 </tr>
                                 @include('adquisiciones.modales.modalobservaciones')
@@ -130,6 +185,7 @@
     <script>
         $(document).ready(function () {
             $('#example').DataTable({
+                order: [[0, 'desc']],
                 scrollX: true,
                 "lengthMenu": [[15,20,50,-1],[15,20,50,"Todos"]],
                 language: {
@@ -156,6 +212,9 @@
         });
     </script>
 @endsection
+{{-- @section('meta')
+    <meta http-equiv="refresh" content="30" > 
+@endsection --}}
     <!-- Modal -->
     <div class="modal fade" id="agregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -173,8 +232,8 @@
                         <input type="text" name="fingreso" id="fingreso" class="form-control @error('fingreso') is-invalid @enderror" value="{{$fecha}}" readonly>
                     </div>
                     <div class="col-3">
-                        <label for="" class="form-lable">Folio</label>
-                        <input type="text" name="folio" id="folio" minlength="5" maxlength="5" pattern="[0-9]{5,5}" class="form-control @error('folio') is-invalid @enderror" value="{{ old('folio') }}" required>
+                        <label for="" class="form-lable">Folio<b class="text-danger">*</b></label>
+                        <input type="text" name="folio" id="folio" minlength="4" maxlength="5" pattern="[0-9]{4,5}" class="form-control @error('folio') is-invalid @enderror" value="{{ old('folio') }}" required>
                     </div>
                     <div class="col-6"> 
                         <label for="" class="form-lable">Unidad presupuestaria responsable</label>
@@ -184,17 +243,17 @@
                 </div>
                 <div class="row">
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Partida presupuestal</label>
+                        <label for="" class="form-lable">Partida presupuestal<b class="text-danger">*</b></label>
                         <input type="text" name="ppresupuestal" id="ppresupuestal" class="form-control @error('ppresupuestal') is-invalid @enderror" required>
                     </div>
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Número requisición</label>
+                        <label for="" class="form-lable">Número requisición<b class="text-danger">*</b></label>
                         <input type="text" name="nrequisicion" id="nrequisicion" class="form-control @error('nrequisicion') is-invalid @enderror" required>
                     </div>
                 </div>  
                 <div class="row">
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Investigación referencia</label>
+                        <label for="" class="form-lable">Investigación referencia<b class="text-danger">*</b></label>
                         <input type="file" name="ireferencia" id="ireferencia" accept=".pdf" class="form-control @error('ireferencia') is-invalid @enderror" required>
                         @error('ireferencia')
                             <span class="invalid-feedback" role="alert">
@@ -203,7 +262,7 @@
                         @enderror
                     </div>
                     <div class="col-6 mt-2">
-                        <label for="" class="form-lable">Suficiencia presupuestal</label>
+                        <label for="" class="form-lable">Suficiencia presupuestal<b class="text-danger">*</b></label>
                         <input type="file" name="spresupuestal" id="spresupuestal" accept=".pdf" class="form-control @error('spresupuestal') is-invalid @enderror" required>
                         @error('spresupuestal')
                             <span class="invalid-feedback" role="alert">
@@ -217,10 +276,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Partida</th>
-                                <th>Cantidad</th>
-                                <th>Unidad</th>
-                                <th>Descripción</th>
+                                <th>Partida<b class="text-danger">*</b></th>
+                                <th>Cantidad<b class="text-danger">*</b></th>
+                                <th>Unidad<b class="text-danger">*</b></th>
+                                <th>Descripción<b class="text-danger">*</b></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -230,7 +289,7 @@
                                 <td><input type="text" name="unidad" id="unidad" class="form-control" required></td>
                                 <td><input type="text" name="des" id="des" class="form-control" required></td>
                             </tr>
-                            @for($i=0; $i<3; $i++)
+                            @for($i=0; $i<9; $i++)
                             <tr>
                                 <td><input type="text" name="partida{{$i}}" id="partida{{$i}}" class="form-control"></td>
                                 <td><input type="text" name="cantidad{{$i}}" id="cantidad{{$i}}" class="form-control"></td>

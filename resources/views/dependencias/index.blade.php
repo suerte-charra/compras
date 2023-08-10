@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Catalogo de Dependencias</h4>
+                    <h4>Catálogo de Dependencias</h4>
                     <div class="row">
                         <div class="col align-self-end text-end">
                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
@@ -44,7 +44,7 @@
                             <thead>
                                 <tr>
                                     <th>Clave</th>
-                                    <th>Nombre</th>
+                                    <th>Nombre<b class="text-danger">*</b></th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -113,6 +113,7 @@
             $('#example').DataTable({
                 scrollX: true,
                 "lengthMenu": [[15,20,50,-1],[15,20,50,"Todos"]],
+                order: [[1, 'asc']],
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
@@ -176,7 +177,7 @@
         <div class="modal-body">
           <form action="{{route('agregardependencia')}}" method="POST">
             @csrf
-            <label for="" class="form-label">Nombre dependencia</label>
+            <label for="" class="form-label">Nombre dependencia<b class="text-danger">*</b></label>
             <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
             @error('nombre')
                 <span class="invalid-feedback" role="alert">

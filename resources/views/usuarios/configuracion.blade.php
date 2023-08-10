@@ -40,7 +40,7 @@
                         @enderror
                         <br>
                         <label for="">Nueva Contraseña (Mínimo 6 caraceteres y máximo 8 caracteres)</label>
-                        <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror">
+                        <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
                         @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -48,8 +48,8 @@
                         @enderror
                         <br>
                         <label for="">Confirmar Contraseña</label>
-                        <input type="password" name="password_confirmation" id="password-confirm" class="form-control"><br>
-                        <input type="submit" class="btn btn-success btn-sm">
+                        <input type="password" name="password_confirmation" id="password-confirm" class="form-control" autocomplete="new-password"><br>
+                        <input type="submit" class="btn btn-success btn-sm" value="Actualizar">
                     </form>
                 </div>
             </div>

@@ -24,6 +24,7 @@ class ProveedorController extends Controller
             $nuevoproveedor->correo = $request->correo;
             $nuevoproveedor->giro = $request->giro;
             $nuevoproveedor->nombre = $request->nombre;
+            $nuevoproveedor->telefono = $request->telefono;
             $nuevoproveedor->save();
             return back()->with('success', 'Proveedor guardado exitosamente!');
         } catch (\Throwable $th) {
